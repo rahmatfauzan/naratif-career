@@ -16,12 +16,22 @@ class JobController extends Controller
     public function explore(ExploreJobRequest $request, JobDiscoveryService $service): Response
     {
         $filters = $request->validated();
+        $filters['skill_ids'] = collect(explode(',', (string) ($filters['skill_id'] ?? '')))
+            ->filter(fn($id) => is_numeric($id))
+            ->map(fn($id) => (int) $id)
+            ->values()
+            ->all();
 
         $jobs = $service->getExploreJobs($filters);
+        $filterOptions = $service->getExploreFilters();
 
-        return Inertia::render('Public/Explore', [
+        return Inertia::render('Public/explore', [
             'jobs' => $jobs,
-            'filters' => $filters, 
+            'departments' => $filterOptions['departments'],
+            'skills' => $filterOptions['skills'],
+            'jobTypes' => $filterOptions['jobTypes'],
+            'locations' => $filterOptions['locations'],
+            'filters' => $filters,
         ]);
     }
 
@@ -31,9 +41,9 @@ class JobController extends Controller
 
         $similarJobs = $service->getSimilarJobs($job->id, $job->department_id);
 
-        return Inertia::render('Public/JobDetail', [
+        return Inertia::render('Public/jobDetail', [
             'job' => $job,
-            'similarJobs' => $similarJobs,
+            'relatedJobs' => $similarJobs,
         ]);
     }
 }

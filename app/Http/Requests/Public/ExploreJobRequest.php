@@ -26,6 +26,7 @@ class ExploreJobRequest extends FormRequest
         return [
             'search'        => ['nullable', 'string', 'max:100'],
             'department_id' => ['nullable', 'integer', 'exists:departments,id'],
+            'skill_id'      => ['nullable', 'regex:/^\d+(,\d+)*$/'],
             'type'          => ['nullable', new Enum(JobType::class)],
             'location'      => ['nullable', new Enum(JobLocation::class)],
             'sort'          => ['nullable', 'string'],

@@ -48,9 +48,9 @@ export interface JobDetailType extends BaseJob {
     // Semua field tambahan yang cuma di-select di getJobDetail
     salary: string | null;
     description: string;
-    requirements: string;
-    nice_to_have: string | null;
-    benefits: string | null;
+    requirements: string[];
+    nice_to_have: string[] | null;
+    benefits: string[] | null;
     experience_level: string | null;
     team_size: number | null;
     deadline: string | null;

@@ -8,7 +8,7 @@ import SettingsLayout from '@/layouts/settings/layout';
 import PublicLayout from './layouts/public-layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-const publicLayouts = ['Public/index', 'public/jobDetail', 'public/explore'];
+const publicLayouts = ['Public/index', 'Public/jobDetail', 'Public/explore'];
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
