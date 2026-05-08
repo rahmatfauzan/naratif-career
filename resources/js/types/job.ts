@@ -2,6 +2,8 @@
 
 import { Department } from './department';
 import { Skill } from './skill';
+export const LEVEL = ['Beginner', 'Intermediate', 'Advanced', 'Expert'];
+export type Level = (typeof LEVEL)[number];
 
 export const JOB_TYPES = [
     'full-time',
@@ -10,12 +12,9 @@ export const JOB_TYPES = [
     'internship',
     'freelance',
 ] as const;
-
 export type JobType = (typeof JOB_TYPES)[number];
 
-// Kolom dasar yang selalu di-select di semua query
 export const JOB_LOCATIONS = ['onsite', 'remote', 'hybrid'] as const;
-
 export type JobLocation = (typeof JOB_LOCATIONS)[number];
 
 export interface BaseJob {

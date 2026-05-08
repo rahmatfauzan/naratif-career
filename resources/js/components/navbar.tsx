@@ -13,6 +13,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { User, Settings, LogOut } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type NavbarProps = {
     mode?: 'transparent' | 'solid';
@@ -140,7 +141,7 @@ export default function Navbar({ mode = 'transparent' }: NavbarProps) {
                                         <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white/10">
                                             {auth.user.avatar ? (
                                                 <img
-                                                    src={auth.user.avatar}
+                                                    src={`storage/${auth.user.avatar}`}
                                                     alt={auth.user.name}
                                                     className="h-full w-full object-cover"
                                                 />
@@ -192,7 +193,11 @@ export default function Navbar({ mode = 'transparent' }: NavbarProps) {
                             ) : (
                                 <>
                                     <Button
-                                        className={`hover:bg-white/20 ${textColor}`}
+                                        className={cn(
+                                            'transition-colors',
+                                            mode === 'transparent' &&
+                                                'bg-transparent hover:bg-white/10',
+                                        )}
                                         asChild
                                     >
                                         <Link href="/login">Login</Link>

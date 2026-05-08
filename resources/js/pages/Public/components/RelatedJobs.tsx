@@ -32,7 +32,7 @@ export function RelatedJobs({ relatedJobs }: RelatedJobsProps) {
                 {relatedJobs.map((relatedJob: any) => (
                     <Link
                         key={relatedJob.id}
-                        href={`/job/${relatedJob.slug}`}
+                        href={`/jobs/${relatedJob.slug}`}
                         className="group flex flex-col justify-between rounded-2xl border border-black/10 bg-white p-6 transition-all duration-300 hover:border-[#0d5986] hover:shadow-lg"
                     >
                         <div>

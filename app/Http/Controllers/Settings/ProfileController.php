@@ -11,17 +11,49 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Services\Candidate\CandidateService;
+use App\Services\Job\SkillService;
+use App\Services\Job\LanguageService;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        protected CandidateService $candidateService, 
+        protected SkillService $skillService,
+        protected LanguageService $languageService
+    ) {}
+
     /**
-     * Show the user's profile settings page.
+     * Show the user's profile display page.
      */
-    public function edit(Request $request): Response
+    public function index(Request $request): Response
     {
-        return Inertia::render('settings/profile', [
+        $candidateProfile = $this->candidateService
+            ->getCompleteProfile($request->user());
+
+        $regionCode = $candidateProfile?->address?->region_code;
+
+        $regionData = $this->candidateService
+            ->getRegionData($regionCode);
+
+        return Inertia::render('settings/profile/index', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+
             'status' => $request->session()->get('status'),
+
+            'candidateProfile' => $candidateProfile,
+
+            'regionData' => $regionData,
+
+            // deferred
+            'skills' => Inertia::defer(
+                fn() =>
+                $this->skillService->getSkills()
+            ),
+            'languages' => Inertia::defer(
+                fn() =>
+                $this->languageService->getLanguages()
+            ),
         ]);
     }
 
@@ -40,7 +72,7 @@ class ProfileController extends Controller
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Profile updated.')]);
 
-        return to_route('profile.edit');
+        return to_route('profile.index');
     }
 
     /**
