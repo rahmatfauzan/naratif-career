@@ -149,7 +149,7 @@ class JobDiscoveryService
 
     public function getJobDetail(string $slug)
     {
-        return JobPost::query()
+        return $this->basePublishedQuery()
             ->select(
                 'id',
                 'title',
@@ -169,14 +169,10 @@ class JobDiscoveryService
             )
             ->with([
                 'department:id,name,slug',
-                'skills:id,name,slug'
+                'skills:id,name,slug',
+                'pipeline.stages',
             ])
             ->where('slug', $slug)
-            ->where('status', 'published')
-            ->where(function ($query) {
-                $query->where('deadline', '>=', now())
-                    ->orWhereNull('deadline');
-            })
             ->firstOrFail();
     }
 

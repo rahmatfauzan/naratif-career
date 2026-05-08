@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Models\CandidateDocument;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends Controller
@@ -13,7 +14,7 @@ class DocumentController extends Controller
      */
     public function show(CandidateDocument $document)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         // Otorisasi:
         // 1. Apakah user ini adalah pemilik dokumen?
@@ -25,8 +26,8 @@ class DocumentController extends Controller
         // Cek apakah file ada di disk 'local' (Private)
         if (Storage::disk('local')->exists($document->file_path)) {
             return response()->file(Storage::disk('local')->path($document->file_path));
-        } 
-        
+        }
+
         // Fallback: Jika file tersebut diunggah sebelum sistem private dibuat (masih di public)
         if (Storage::disk('public')->exists($document->file_path)) {
             return response()->file(Storage::disk('public')->path($document->file_path));

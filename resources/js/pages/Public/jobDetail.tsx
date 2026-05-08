@@ -8,15 +8,19 @@ import { JobDetailContent } from './components/JobDetailContent';
 import { JobDetailSidebar } from './components/JobDetailSidebar';
 import { RelatedJobs } from './components/RelatedJobs';
 import { JobDetailSkeleton } from './components/JobDetailSkeleton';
+import { JobApplicationModal } from './components/JobApplicationModal';
 
 export default function JobDetail({
     job,
     relatedJobs,
+    authCandidate,
 }: {
-    job: JobDetailType | { data: JobDetailType };
+    job: JobDetailType | { data: JobDetailType; has_applied?: boolean };
     relatedJobs: JobCardType[] | { data: JobCardType[] };
+    authCandidate: any;
 }) {
     const [isLoading, setIsLoading] = useState(true);
+    const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
 
     const fadeUp: Variants = {
         hidden: { opacity: 0, y: 10 },
@@ -65,13 +69,25 @@ export default function JobDetail({
                         <JobDetailContent jobData={jobData} fadeUp={fadeUp} />
 
                         {/* BAGIAN KANAN: Sticky Card (Ringkasan & Deadline) */}
-                        <JobDetailSidebar jobData={jobData} fadeUp={fadeUp} />
+                        <JobDetailSidebar 
+                            jobData={jobData} 
+                            fadeUp={fadeUp} 
+                            onApplyClick={() => setIsApplicationModalOpen(true)}
+                        />
                     </div>
 
                     {/* --- LOWONGAN PEKERJAAN LAINNYA --- */}
                     <RelatedJobs relatedJobs={relatedJobsData} />
                 </motion.div>
             </section>
+
+            {/* MODAL LAMARAN */}
+            <JobApplicationModal 
+                isOpen={isApplicationModalOpen} 
+                onClose={() => setIsApplicationModalOpen(false)} 
+                jobData={jobData}
+                authCandidate={authCandidate}
+            />
         </div>
     );
 }

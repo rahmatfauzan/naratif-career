@@ -141,7 +141,7 @@ export default function Navbar({ mode = 'transparent' }: NavbarProps) {
                                         <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-white/10">
                                             {auth.user.avatar ? (
                                                 <img
-                                                    src={`storage/${auth.user.avatar}`}
+                                                    src={`/storage/${auth.user.avatar}`}
                                                     alt={auth.user.name}
                                                     className="h-full w-full object-cover"
                                                 />

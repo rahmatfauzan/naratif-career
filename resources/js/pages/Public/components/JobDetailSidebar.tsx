@@ -2,14 +2,18 @@ import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { formatDate, getDaysAgo } from '@/lib/formatter';
+import { Link, usePage } from '@inertiajs/react';
 import { JobDetailType } from '@/types/job';
+import { PageProps } from '@/types';
 
 interface JobDetailSidebarProps {
-    jobData: JobDetailType;
+    jobData: JobDetailType & { has_applied?: boolean };
     fadeUp: Variants;
+    onApplyClick?: () => void;
 }
 
-export function JobDetailSidebar({ jobData, fadeUp }: JobDetailSidebarProps) {
+export function JobDetailSidebar({ jobData, fadeUp, onApplyClick }: JobDetailSidebarProps) {
+    const user = usePage<PageProps>().props.auth?.user;
     return (
         <div className="lg:col-span-4">
             <motion.div
@@ -76,9 +80,23 @@ export function JobDetailSidebar({ jobData, fadeUp }: JobDetailSidebarProps) {
                     )}
                 </div>
 
-                <Button className="h-14 w-full cursor-pointer bg-[#0d5986] text-lg font-semibold text-white shadow-md transition-transform hover:bg-[#0d5986]/90 active:scale-95">
-                    Lamar Sekarang
-                </Button>
+                {!user ? (
+                    <Button asChild className="h-14 w-full bg-[#0d5986] text-lg font-semibold text-white shadow-md hover:bg-[#0d5986]/90">
+                        <Link href="/login">Login untuk Melamar</Link>
+                    </Button>
+                ) : jobData.has_applied ? (
+                    <Button disabled className="h-14 w-full bg-gray-400 text-lg font-semibold text-white shadow-md cursor-not-allowed">
+                        Sudah Dilamar
+                    </Button>
+                ) : (
+                    <Button 
+                        onClick={onApplyClick}
+                        className="h-14 w-full cursor-pointer bg-[#0d5986] text-lg font-semibold text-white shadow-md transition-transform hover:bg-[#0d5986]/90 active:scale-95"
+                    >
+                        Lamar Sekarang
+                    </Button>
+                )}
+
                 <p className="mt-4 text-center text-xs text-gray-400">
                     Proses rekrutmen kami bebas biaya.
                 </p>

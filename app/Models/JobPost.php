@@ -55,4 +55,9 @@ class JobPost extends Model
                     ->using(JobSkill::class)
                     ->withTimestamps();
     }
+
+    public function jobQuestions()
+    {
+        return $this->hasMany(JobQuestion::class);
+    }
 }

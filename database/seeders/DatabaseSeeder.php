@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             PipelineSeeder::class,
             JobPostSeeder::class,
             CandidateSeeder::class,
+            JobQuestionSeeder::class,
         ]);
     }
 }

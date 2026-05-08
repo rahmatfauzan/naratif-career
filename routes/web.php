@@ -5,6 +5,7 @@ use App\Http\Controllers\Public\JobController;
 use App\Http\Controllers\Public\LanguageController;
 use App\Http\Controllers\public\SkillController;
 use App\Http\Controllers\Candidate\DocumentController;
+use App\Http\Controllers\Candidate\JobApplicationController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', [HomeController::class, 'index'])->name('public.home');
@@ -29,6 +30,7 @@ Route::prefix('languages')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
+    Route::post('/jobs/{jobPost}/apply', [JobApplicationController::class, 'store'])->name('candidate.jobs.apply');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
